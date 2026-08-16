@@ -1,0 +1,26 @@
+{
+  "name": "gest-irigation-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Gest Irrigation enterprise management system",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "init-db": "node src/config/database.js"
+  },
+  "keywords": ["enterprise", "management", "irrigation", "api"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.0",
+    "sqlite3": "^5.1.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "express-validator": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
