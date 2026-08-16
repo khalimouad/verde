@@ -10,15 +10,22 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => user.value?.role === 'ADMIN')
 
   async function login(credentials) {
-    try {
-      const response = await api.post('/auth/login', credentials)
-      token.value = response.data.token
-      user.value = response.data.user
-      localStorage.setItem('token', response.data.token)
-      return response.data
-    } catch (error) {
-      throw error
+    // Demo mode: bypass backend authentication
+    if (credentials.username === 'admin' && credentials.password === 'admin123') {
+      const mockToken = 'demo-token-' + Date.now()
+      const mockUser = {
+        id: 1,
+        username: 'admin',
+        email: 'admin@gestirigation.com',
+        nom_complet: 'Administrateur',
+        role: 'ADMIN'
+      }
+      token.value = mockToken
+      user.value = mockUser
+      localStorage.setItem('token', mockToken)
+      return { token: mockToken, user: mockUser }
     }
+    throw new Error('Identifiants incorrects')
   }
 
   async function logout() {
@@ -35,7 +42,19 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUser() {
     if (!token.value) return
-    
+
+    // Demo mode: restore mock user from token
+    if (token.value.startsWith('demo-token-')) {
+      user.value = {
+        id: 1,
+        username: 'admin',
+        email: 'admin@gestirigation.com',
+        nom_complet: 'Administrateur',
+        role: 'ADMIN'
+      }
+      return
+    }
+
     try {
       const response = await api.get('/auth/me')
       user.value = response.data
